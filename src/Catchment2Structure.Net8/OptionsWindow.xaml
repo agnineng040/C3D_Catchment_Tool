@@ -1,0 +1,435 @@
+<Window x:Class="Catchment2Structure.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Catchment to Structure"
+        Width="1400" Height="780"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="#FF3B4453"
+        Foreground="#FFEAEAEA"
+        FontFamily="Segoe UI"
+        FontSize="12">
+    
+    <Window.Resources>
+        <!-- Civil 3D 2026-ish dark palette (aligned with CatchmentRunoffCoefficient UI) -->
+        <SolidColorBrush x:Key="C3D_WindowBg" Color="#FF3B4453"/>
+        <SolidColorBrush x:Key="C3D_PanelBg" Color="#FF2E3440"/>
+        <SolidColorBrush x:Key="C3D_HeaderBg" Color="#FF454F61"/>
+        <SolidColorBrush x:Key="C3D_RowBg" Color="#FF36404F"/>
+        <SolidColorBrush x:Key="C3D_RowAltBg" Color="#FF333C4B"/>
+        <SolidColorBrush x:Key="C3D_Border" Color="#FF566072"/>
+        <SolidColorBrush x:Key="C3D_Text" Color="#FFEAEAEA"/>
+        <SolidColorBrush x:Key="C3D_TextMuted" Color="#FFC9D1DF"/>
+        <SolidColorBrush x:Key="C3D_AccentBlue" Color="#FF0998D8"/>
+        <SolidColorBrush x:Key="C3D_AccentBlueHover" Color="#FF0BA3E8"/>
+        <SolidColorBrush x:Key="C3D_AccentBluePressed" Color="#FF077FB3"/>
+        <!-- Dark slate gray for selected row text (readable on light blue-grey highlight) -->
+        <SolidColorBrush x:Key="C3D_RowHighlightText" Color="#FF334155"/>
+
+        <!-- GroupBox: single thin border, no double perimeter (Rainfall-manager style) -->
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource C3D_WindowBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1" Padding="0,0,0,4" Margin="0,0,0,6">
+                                <ContentPresenter ContentSource="Header"/>
+                            </Border>
+                            <Border Grid.Row="1" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="4,2"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="4,2"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Background" Value="{StaticResource C3D_PanelBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_Border}"/>
+        </Style>
+
+        <!-- Dark ComboBox (forces dark popup background) -->
+        <Style TargetType="ComboBox">
+            <Setter Property="MinHeight" Value="24"/>
+            <Setter Property="Padding" Value="8,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="Background" Value="{StaticResource C3D_PanelBg}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_Border}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="OuterBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="2"
+                                    SnapsToDevicePixels="True"/>
+
+                            <ToggleButton x:Name="ToggleButton"
+                                          Focusable="False"
+                                          ClickMode="Press"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Stretch">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ContentPresenter Grid.Column="0"
+                                                      Margin="{TemplateBinding Padding}"
+                                                      HorizontalAlignment="Stretch"
+                                                      VerticalAlignment="Center"
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+                                    <Path Grid.Column="1"
+                                          x:Name="Arrow"
+                                          Data="M 0 0 L 4 4 L 8 0 Z"
+                                          Fill="{StaticResource C3D_Text}"
+                                          Width="8" Height="4"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,8,0"/>
+                                </Grid>
+                            </ToggleButton>
+
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Fade">
+                                <Border x:Name="DropDownBorder"
+                                        Background="{StaticResource C3D_PanelBg}"
+                                        BorderBrush="{StaticResource C3D_Border}"
+                                        BorderThickness="1"
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer Background="{StaticResource C3D_PanelBg}"
+                                                  SnapsToDevicePixels="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="OuterBorder" Property="Opacity" Value="0.55"/>
+                                <Setter TargetName="Arrow" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{StaticResource C3D_AccentBlueHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{StaticResource C3D_AccentBlue}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="MinHeight" Value="22"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="Background" Value="{StaticResource C3D_PanelBg}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource C3D_RowBg}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource C3D_RowAltBg}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="4,2"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource C3D_AccentBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_AccentBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource C3D_AccentBlueHover}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource C3D_AccentBlueHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource C3D_AccentBluePressed}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource C3D_AccentBluePressed}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="RowBackground" Value="{StaticResource C3D_RowBg}"/>
+            <Setter Property="AlternatingRowBackground" Value="{StaticResource C3D_RowAltBg}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_Border}"/>
+            <Setter Property="Background" Value="{StaticResource C3D_WindowBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource C3D_HeaderBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="Padding" Value="6,4"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource C3D_RowBg}"/>
+                    <Setter Property="Foreground" Value="{StaticResource C3D_RowHighlightText}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource C3D_HeaderBg}" Padding="10" BorderBrush="{StaticResource C3D_Border}" BorderThickness="0,0,0,1">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="Catchment to Structure Assignment"/>
+                    <TextBlock FontSize="12" Opacity="0.9" Text="Assign catchments to structures in a pipe network (optional polyline → catchment conversion)."/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top selector group (mirrors Parts List Table layout) -->
+            <GroupBox Grid.Row="0" Header="Run Options">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,10,0">
+                        <Label Content="Select Pipe Network"/>
+                        <Label Content="Target Catchment Group" Margin="0,12,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <ComboBox x:Name="PipeNetworkCombo" Height="28"/>
+                        <ComboBox x:Name="CatchmentGroupCombo" Height="28" Margin="0,12,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Vertical" Margin="12,0,0,0" VerticalAlignment="Top">
+                        <CheckBox x:Name="OverwriteCheck" Content="Overwrite existing assignments" Margin="0"/>
+                        <CheckBox x:Name="PromptMultiCheck" Content="Prompt when multiple structures found" Margin="0,8,0,0" IsChecked="True"/>
+                        <CheckBox x:Name="PromptNoStructCheck" Content="If none inside catchment, prompt to select structure" Margin="0,8,0,0" IsChecked="True"/>
+                    </StackPanel></Grid>
+            </GroupBox>
+
+            <!-- Middle: conversion + layers -->
+            <GroupBox Grid.Row="1" Header="Polyline to Catchment (Optional)">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8" VerticalAlignment="Center">
+                        <CheckBox x:Name="ConvertPolylinesCheck" Content="Convert closed polylines to catchments before assignment"
+                                  IsChecked="False" Checked="ConvertPolylinesCheck_Checked" Unchecked="ConvertPolylinesCheck_Checked"/>
+                        <CheckBox x:Name="ErasePolylinesCheck" Content="Erase polylines after conversion" IsChecked="False" />
+                        <CheckBox x:Name="OnlyProcessCreatedCheck" Content="Only process catchments created in this run" IsChecked="True" />
+                    </StackPanel>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="420"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Layer picker -->
+                        <GroupBox Grid.Column="0" Header="Layers to Convert" Margin="0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8" VerticalAlignment="Center">
+                                    <Button Content="All" Width="70" Click="SelectAllLayers_Click"/>
+                                    <Button Content="None" Width="70" Click="SelectNoLayers_Click"/>
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="1" x:Name="LayersGrid" AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn Header="Use" Binding="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                                        <DataGridTextColumn Header="Layer" Binding="{Binding Name}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </GroupBox>
+
+                        <!-- Conversion settings -->
+                        <GroupBox Grid.Column="1" Header="Catchment Creation Settings" Margin="8,0,0,0">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" Content="Catchment Style"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="CatchmentStyleCombo" Height="28"/>
+
+                                <Label Grid.Row="1" Grid.Column="0" Content="Reference Surface" Margin="0,10,0,0"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="SurfaceCombo" Height="28" Margin="0,10,0,0"/>
+
+                                <Label Grid.Row="2" Grid.Column="0" Content="Create in Catchment Group" Margin="0,10,0,0"/>
+                                <ComboBox Grid.Row="2" Grid.Column="1" x:Name="CreateGroupCombo" Height="28" Margin="0,10,0,0" SelectionChanged="CreateGroupCombo_SelectionChanged"/>
+
+                                <Label Grid.Row="3" Grid.Column="0" Content="New Group Name" Margin="0,10,0,0"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" x:Name="NewGroupNameText" Height="28" Margin="0,10,0,0"/>
+
+                                <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Margin="0,12,0,0" Foreground="{StaticResource C3D_TextMuted}"
+                                           Text="Note: Polylines must be CLOSED and non-self-intersecting. Conversion creates one catchment per polyline."/>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+
+                    <!-- spacer -->
+                    <Border Grid.Row="2" Height="1" Background="#00000000"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Summary -->
+            <GroupBox Grid.Row="2" Header="Summary">
+                <Grid>
+                    <TextBox x:Name="SummaryBox" Height="92" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontFamily="Consolas"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="{StaticResource C3D_HeaderBg}" Padding="10" BorderBrush="{StaticResource C3D_Border}" BorderThickness="0,1,0,0">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                    <TextBlock Opacity="0.9" VerticalAlignment="Center" Text="Command: C2S"/>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button x:Name="RunButton" Content="Run" Width="110" Height="30" Click="RunButton_Click"/>
+                    <Button x:Name="CloseButton" Content="Close" Width="110" Height="30" Click="CloseButton_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

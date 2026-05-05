@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApplicationPackage SchemaVersion="1.0"
+  Name="Catchment2Structure"
+  AppVersion="1.0.0"
+  Description="Assign Civil 3D catchments to a pipe network structure contained within each catchment boundary."
+  Author="Mike Pizzino"
+  ProductType="Application"
+  ProductCode="24F3E486-C396-4785-BB94-7CD1D36D8313">
+  <CompanyDetails Name="(edit me)" Url="" Email="" />
+  <Components>
+<!-- Civil 3D 2025-2026 (AutoCAD R25.0-R25.1) - .NET 8 build -->
+    <ComponentEntry AppName="Catchment2Structure"
+      ModuleName="./Contents/Net8/Catchment2Structure_NET8.dll"
+      AppDescription="Catchment to Structure assignment (Civil 3D 2026)"
+      AppType=".Net"
+      LoadOnAutoCADStartup="True">
+      <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R25.1" SeriesMax="R25.1" />
+      <Commands GroupName="Catchment2Structure">
+        <Command Local="CATCHMENT2STRUCT" Global="CATCHMENT2STRUCT" />
+      </Commands>
+    </ComponentEntry>
+  </Components>
+</ApplicationPackage>

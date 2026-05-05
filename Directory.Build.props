@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- BAKED-IN: Civil 3D 2026 (AutoCAD 2026 base folder) -->
+    <Civil3DNet8Root>C:\Program Files\Autodesk\AutoCAD 2026\</Civil3DNet8Root>
+
+    <!-- Bundle output (created/updated on Build). -->
+    <BundleRoot>$(MSBuildThisFileDirectory)bundle\Catchment2Structure.bundle</BundleRoot>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,15 @@
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure.Net8.csproj.AssemblyReference.cache
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\OptionsWindow.baml
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\PolylineIssuesWindow.baml
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\ResultsWindow.baml
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\ReviewWindow.baml
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\OptionsWindow.g.cs
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\PolylineIssuesWindow.g.cs
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\ResultsWindow.g.cs
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\ReviewWindow.g.cs
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure_NET8_MarkupCompile.cache
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure_NET8.g.resources
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure.Net8.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure.Net8.AssemblyInfoInputs.cache
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure.Net8.AssemblyInfo.cs
+C:\Users\pizzinm\OneDrive - Autodesk\Documents\C3D Tools\Catchment to Structure\C2S_BuildFix\src\Catchment2Structure.Net8\obj\Debug\net8.0-windows\Catchment2Structure.Net8.csproj.CoreCompileInputs.cache

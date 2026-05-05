@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Catchment2Structure</RootNamespace>
+    <AssemblyName>Catchment2Structure_NET8</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <DebugType>portable</DebugType>
+      <UseWPF>true</UseWPF>
+      <NoWarn>$(NoWarn);MSB3277</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Resolve AecBaseMgd path for Civil 3D / AEC base dependencies -->
+    <AecBaseMgdPath Condition="Exists('$(Civil3DNet8Root)AecBaseMgd.dll')">$(Civil3DNet8Root)AecBaseMgd.dll</AecBaseMgdPath>
+    <AecBaseMgdPath Condition="'$(AecBaseMgdPath)'=='' and Exists('$(Civil3DNet8Root)C3D\AecBaseMgd.dll')">$(Civil3DNet8Root)C3D\AecBaseMgd.dll</AecBaseMgdPath>
+    <AecBaseMgdPath Condition="'$(AecBaseMgdPath)'=='' and Exists('$(Civil3DNet8Root)AecBase\AecBaseMgd.dll')">$(Civil3DNet8Root)AecBase\AecBaseMgd.dll</AecBaseMgdPath>
+    <AecBaseMgdPath Condition="'$(AecBaseMgdPath)'=='' and Exists('$(Civil3DNet8Root)ACA\AecBaseMgd.dll')">$(Civil3DNet8Root)ACA\AecBaseMgd.dll</AecBaseMgdPath>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <!-- AutoCAD .NET 8 managed API -->
+    <Reference Include="AcCoreMgd">
+      <HintPath>$(Civil3DNet8Root)AcCoreMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcDbMgd">
+      <HintPath>$(Civil3DNet8Root)AcDbMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcMgd">
+      <HintPath>$(Civil3DNet8Root)AcMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Civil 3D managed API -->
+    <Reference Include="AeccDbMgd">
+      <HintPath>$(Civil3DNet8Root)C3D\AeccDbMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AeccMgd">
+      <HintPath>$(Civil3DNet8Root)C3D\AeccMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="AeccHydroCalcsMgd">
+      <HintPath>$(Civil3DNet8Root)C3D\AeccHydroCalcsMgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Some Civil 3D installs require these AEC base assemblies at runtime. Safe to reference. -->
+    <Reference Include="AecBaseMgd">
+      <HintPath>$(AecBaseMgdPath)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CopyNet8ToBundle" AfterTargets="Build">
+    <PropertyGroup>
+      <BundleOut>$(BundleRoot)\Contents\Net8</BundleOut>
+    </PropertyGroup>
+    <MakeDir Directories="$(BundleOut)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BundleOut)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb"
+          Condition="Exists('$(TargetDir)$(TargetName).pdb')"
+          DestinationFolder="$(BundleOut)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(BundleRoot)\PackageContents.xml"
+          Condition="Exists('$(BundleRoot)\PackageContents.xml')"
+          DestinationFolder="$(BundleRoot)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

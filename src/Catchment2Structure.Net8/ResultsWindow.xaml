@@ -1,0 +1,114 @@
+<Window x:Class="Catchment2Structure.ResultsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Catchment to Structure - Results"
+        Width="900" Height="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="#FF3B4453"
+        Foreground="#FFEAEAEA"
+        FontFamily="Segoe UI"
+        FontSize="12">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="C3D_WindowBg" Color="#FF3B4453"/>
+        <SolidColorBrush x:Key="C3D_PanelBg" Color="#FF2E3440"/>
+        <SolidColorBrush x:Key="C3D_HeaderBg" Color="#FF454F61"/>
+        <SolidColorBrush x:Key="C3D_Border" Color="#FF566072"/>
+        <SolidColorBrush x:Key="C3D_Text" Color="#FFEAEAEA"/>
+        <SolidColorBrush x:Key="C3D_AccentBlue" Color="#FF0998D8"/>
+        <SolidColorBrush x:Key="C3D_AccentBlueHover" Color="#FF0BA3E8"/>
+        <SolidColorBrush x:Key="C3D_AccentBluePressed" Color="#FF077FB3"/>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="8"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_Border}"/>
+            <Setter Property="Background" Value="{StaticResource C3D_WindowBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="{StaticResource C3D_PanelBg}"/>
+            <Setter Property="Foreground" Value="{StaticResource C3D_Text}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_Border}"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource C3D_AccentBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource C3D_AccentBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource C3D_AccentBlueHover}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource C3D_AccentBlueHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource C3D_AccentBluePressed}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource C3D_AccentBluePressed}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                                <Setter Property="Cursor" Value="Arrow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource C3D_HeaderBg}" Padding="10" BorderBrush="{StaticResource C3D_Border}" BorderThickness="0,0,0,1">
+            <TextBlock FontSize="16" FontWeight="SemiBold" Text="Results"/>
+        </Border>
+
+        <!-- Body -->
+        <Grid Grid.Row="1" Margin="12">
+            <GroupBox Header="Summary">
+                <TextBox x:Name="SummaryBox"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         FontFamily="Consolas"
+                         FontSize="12"/>
+            </GroupBox>
+        </Grid>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="{StaticResource C3D_HeaderBg}" Padding="10" BorderBrush="{StaticResource C3D_Border}" BorderThickness="0,1,0,0">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="Close" Width="110" Height="30" Click="Close_Click"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "M81awD70Qoc=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\pizzinm\\OneDrive - Autodesk\\Documents\\C3D Tools\\Catchment to Structure\\C2S_BuildFix\\src\\Catchment2Structure.Net8\\Catchment2Structure.Net8.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\pizzinm\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.23\\microsoft.windowsdesktop.app.ref.8.0.23.nupkg.sha512",
+    "C:\\Users\\pizzinm\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.23\\microsoft.netcore.app.ref.8.0.23.nupkg.sha512",
+    "C:\\Users\\pizzinm\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.23\\microsoft.aspnetcore.app.ref.8.0.23.nupkg.sha512"
+  ],
+  "logs": []
+}
