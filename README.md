@@ -1,6 +1,6 @@
 # Catchment2Structure (Civil 3D add-in)
 
-**Catchment to Structure** assigns each Civil 3D **Catchment** to a **Pipe Network Structure** when the structure’s XY location lies **inside** that catchment’s boundary. If several structures qualify, the tool picks the one **nearest** the catchment **discharge point** (with a fallback to the boundary centroid if the discharge point is not available from the API).
+**Catchment to Structure** assigns each Civil 3D **Catchment** to a **Pipe Network Structure** when the structure’s XY location lies **inside** that catchment’s boundary. If several structures qualify, the tool picks the one **nearest** the catchment **discharge point** (with a fallback to the boundary centroid if the discharge point is not available from the API).  If checked on, the tool will also covert closed polylines to Civil 3D catchments and connect it to a pipe network structure.
 
 ---
 
